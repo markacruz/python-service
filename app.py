@@ -6,7 +6,9 @@ def handler(event, context):
         client = boto3.resource('dynamodb')
         table = client.Table('python-service-db')
         
-        if event['httpMethod'] is "GET" and event['path'] is "/items":
+        print(event)
+        
+        if event['httpMethod'] == "GET" and event['path'] == "/items":
             res = table.get_item(
                 Key = {
                     'firstName': event['pathParameters']['firstName'],
@@ -14,7 +16,7 @@ def handler(event, context):
                     }
                 )
             body = res
-        elif event['httpMethod'] is "POST" and event['path'] is "/items":
+        elif event['httpMethod'] == "POST" and event['path'] == "/items":
             describeTable = table.describe_table(TableName='python-service-db')
             table.put_item(
                 Item = {
