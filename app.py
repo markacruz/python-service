@@ -3,8 +3,6 @@ import json
 
 def handler(event, context):
     
-    eventJson = json.loads(event)
-    
     try:
         client = boto3.resource('dynamodb')
         table = client.Table('python-service-db')
