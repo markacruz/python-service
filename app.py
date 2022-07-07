@@ -11,6 +11,7 @@ def handler(event, context):
     if event['routeKey'] == "GET /items":
         res = table.get_item(
             Key = {
+                'id': event['queryStringParameters']['id'],
                 'firstName': event['queryStringParameters']['firstName'],
                 'lastName': event['queryStringParameters']['lastName']
                 }
