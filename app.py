@@ -20,8 +20,8 @@ def handler(event, context):
             table.put_item(
                 Item = {
                     'id': describeTable['Table']['ItemCount'],
-                    'firstName': event['queryStringParameters']['firstName'],
-                    'lastName': event['queryStringParameters']['lastName']
+                    'firstName': event['body']['firstName'],
+                    'lastName': event['body']['lastName']
                     }
                 )
             body = {
