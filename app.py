@@ -2,37 +2,33 @@ import boto3
 import json
 
 def handler(event, context):
-    
     try:
         client = boto3.resource('dynamodb')
         table = client.Table('python-service-db')
         
-        table.put_item(Item= {
-            'id': '0',
-            'name': 'Mark'
-        })
-        
-        # if eventJson['routeKey'] is "GET /items/{id}":
-        #     table.get_item({
-        #     "Key": {
-        #       'id': event.pathParameters.id
-        #         }
-        #     })
-        #     body = {
-        #         'message': 'Item added!'
-        #     }
-        # elif eventJson['routeKey'] is "POST /items":
-        #     table.put_item(
-                
-        #     )
-            
-        # return {
-        #     'statusCode': 200,
-        #     'body': body
-        # }
+        if event['httpMethod'] is "GET" and event['path'] is "/items":
+            res = table.get_item(
+                Key = {
+                    'firstName': event['pathParameters']['firstName'],
+                    'lastName': event['pathParameters']['lastName']
+                    }
+                )
+            body = res
+        elif event['httpMethod'] is "POST" and event['path'] is "/items":
+            describeTable = table.describe_table(TableName='python-service-db')
+            table.put_item(
+                Item = {
+                    'id': describeTable['Table']['ItemCount'],
+                    'firstName': event['body']['firstName'],
+                    'lastName': event['body']['lastName']
+                    }
+                )
+            body = {
+                'message': 'Successfully added!'
+                }
         return {
-            'status': 200,
-            'message': 'Successfully added!'
+            'statusCode': 200,
+            'body': body
         }
         
     except Exception as e:
