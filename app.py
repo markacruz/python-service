@@ -8,21 +8,21 @@ def handler(event, context):
         
         print(event)
         
-        if event['httpMethod'] == "GET" and event['path'] == "/items":
+        if event['routeKey'] == "GET /items":
             res = table.get_item(
                 Key = {
-                    'firstName': event['pathParameters']['firstName'],
-                    'lastName': event['pathParameters']['lastName']
+                    'firstName': event['queryStringParameters']['firstName'],
+                    'lastName': event['queryStringParameters']['lastName']
                     }
                 )
             body = res
-        elif event['httpMethod'] == "POST" and event['path'] == "/items":
+        elif event['routeKey'] == "POST /items":
             describeTable = table.describe_table(TableName='python-service-db')
             table.put_item(
                 Item = {
                     'id': describeTable['Table']['ItemCount'],
-                    'firstName': event['body']['firstName'],
-                    'lastName': event['body']['lastName']
+                    'firstName': event['queryStringParameters']['firstName'],
+                    'lastName': event['queryStringParameters']['lastName']
                     }
                 )
             body = {
