@@ -36,7 +36,7 @@ def handler(event, context):
     except Exception as e:
         return {
             'statusCode': 400,
-            'body': e['message']
+            'body': e
         }
         
 
