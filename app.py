@@ -14,6 +14,7 @@ def handler(event, context):
                 'id': event['queryStringParameters']['id']
                 }
             )
+        print(res)
         body = res
     elif event['routeKey'] == "POST /items":
         describeTable = table.describe_table(TableName='python-service-db')
