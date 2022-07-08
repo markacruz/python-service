@@ -1,14 +1,13 @@
 pipeline {
     agent any
     stages {
-        stage('Initilizing') {
+        stage('Initializing') {
             steps {
                 git branch: 'main', url: 'https://github.com/markacruz/python-service'
             }
         }
-        stage('Building Dockerfile') { 
+        stage('Building Dockerfile') {
             steps {
-                sh 'docker image prune'
                 sh 'docker build -t python-service:${BUILD_NUMBER} .'
             }
         }
@@ -24,6 +23,7 @@ pipeline {
                 
                 docker tag python-service:${BUILD_NUMBER} 513339161784.dkr.ecr.us-east-1.amazonaws.com/python-service
                 docker push 513339161784.dkr.ecr.us-east-1.amazonaws.com/python-service
+                docker image prune
                 """
             }
         }
