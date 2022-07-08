@@ -17,13 +17,9 @@ def handler(event, context):
         
         if event['routeKey'] == "POST /items":
             print({"message": "here"})
-            describeTable1 = client.describe_table(TableName='python-service-db')
-            describeTable2 = table.describe_table(TableName='python-service-db')
-            print(describeTable1)
-            print(describeTable2)
             table.put_item(
                 Item = {
-                    'id': describeTable1['Table']['ItemCount'],
+                    'id': event['body']['id'],
                     'firstName': event['body']['firstName'],
                     'lastName': event['body']['lastName']
                     }
@@ -44,5 +40,5 @@ def handler(event, context):
     except Exception as e:
         return json.dumps({
                 'statusCode': 400,
-                'body': e
+                'message': 'Error'
         })
