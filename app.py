@@ -18,7 +18,7 @@ def handler(event, context):
             body = res['Item']
         
         elif event['routeKey'] == "POST /items":
-            describeTable = table.describe_table(TableName='python-service-db')
+            describeTable = client.describe_table(TableName='python-service-db')
             print(describeTable)
             table.put_item(
                 Item = {
