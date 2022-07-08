@@ -7,8 +7,6 @@ def handler(event, context):
         client = boto3.resource('dynamodb')
         table = client.Table('python-service-db')
         
-        print(event)
-        
         if event['routeKey'] == "GET /items":
             res = table.get_item(
                 Key = {
@@ -17,12 +15,15 @@ def handler(event, context):
                 )
             body = res['Item']
         
-        elif event['routeKey'] == "POST /items":
-            describeTable = client.describe_table(TableName='python-service-db')
-            print(describeTable)
+        if event['routeKey'] == "POST /items":
+            print({"message": "here"})
+            describeTable1 = client.describe_table(TableName='python-service-db')
+            describeTable2 = table.describe_table(TableName='python-service-db')
+            print(describeTable1)
+            print(describeTable2)
             table.put_item(
                 Item = {
-                    'id': describeTable['Table']['ItemCount'],
+                    'id': describeTable1['Table']['ItemCount'],
                     'firstName': event['body']['firstName'],
                     'lastName': event['body']['lastName']
                     }
@@ -40,8 +41,8 @@ def handler(event, context):
                 'statusCode': 200,
                 'body': body
             })
-    except:
+    except Exception as e:
         return json.dumps({
-                'statusCode': 200,
-                'body': body
+                'statusCode': 400,
+                'body': e
         })
