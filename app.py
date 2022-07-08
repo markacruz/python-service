@@ -7,6 +7,8 @@ def handler(event, context):
         client = boto3.resource('dynamodb')
         table = client.Table('python-service-db')
         
+        print(event)
+        
         if event['routeKey'] == "GET /items":
             res = table.get_item(
                 Key = {
@@ -16,7 +18,6 @@ def handler(event, context):
             body = res['Item']
         
         if event['routeKey'] == "POST /items":
-            print({"message": "here"})
             table.put_item(
                 Item = {
                     'id': event['body']['id'],
