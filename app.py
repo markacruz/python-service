@@ -28,14 +28,16 @@ def handler(event, context):
             }
         
         if event['routeKey'] == "DELETE /items":
-            id = event['queryStringParameters']['id']
+            firstName = event['queryStringParameters']['firstName']
+            lastName = event['queryStringParameters']['lastName']
             table.delete_item(
                 Key = {
-                    'id': id,
+                    'firstName': firstName,
+                    'lastName': lastName,
                     }
                 )
             body = {
-                'message': 'Successfully deleted ID: !' + id
+                'message': 'Successfully deleted ID: ' + firstName + " " + lastName
             }
         
         if body == "":
