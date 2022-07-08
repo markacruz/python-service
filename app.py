@@ -27,6 +27,17 @@ def handler(event, context):
                 'message': 'Successfully added!'
             }
         
+        if event['routeKey'] == "DELETE /items":
+            id = event['queryStringParameters']['id']
+            table.delete_item(
+                Key = {
+                    'id': id,
+                    }
+                )
+            body = {
+                'message': 'Successfully deleted ID: !' + id
+            }
+        
         if body == "":
             return json.dumps({
                 'statusCode': 400,

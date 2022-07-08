@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Building Dockerfile') { 
             steps {
-                sh 'docker images prune'
+                sh 'docker image prune'
                 sh 'docker build -t python-service:${BUILD_NUMBER} .'
             }
         }
@@ -24,7 +24,6 @@ pipeline {
                 
                 docker tag python-service:${BUILD_NUMBER} 513339161784.dkr.ecr.us-east-1.amazonaws.com/python-service
                 docker push 513339161784.dkr.ecr.us-east-1.amazonaws.com/python-service
-                docker images prune
                 """
             }
         }
